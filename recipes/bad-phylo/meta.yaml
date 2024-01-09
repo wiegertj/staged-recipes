@@ -1,0 +1,61 @@
+{% set name = "bad-phylo" %}
+{% set version = "0.1.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/bad-phylo-{{ version }}.tar.gz
+  sha256: 28980cd95cb046b0d03ed95746fa80d6e8c5f97ac01f729eb5eedeff8cec3175
+
+build:
+  entry_points:
+    - bad = app.__main__:main
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv
+  number: 0
+
+requirements:
+  host:
+    - python >=3.6
+    - pip
+  run:
+    - python >=3.6
+    - pandas
+    - numpy
+    - ete3
+    - biopython
+    - networkx
+    - scipy
+    - lightgbm ==4.1.0
+    - shap
+    - rich-argparse
+    - matplotlib
+
+test:
+  imports:
+    - app
+    - features
+    - models
+    - prediction
+    - utils
+  commands:
+    - bad --help
+  requires:
+    - pip
+
+about:
+  home: https://github.com/wiegertj/BAD
+  summary: 'EBG is a fast predictor for the standard non-parametric Felsenstein Bootstrap support (SBS)'
+  description: 'EBG is a fast predictor for the standard non-parametric Felsenstein Bootstrap support (SBS) of phylogenetic trees in python.
+    It uses RAxML-NG phylogenies as input and predicts the SBS values of all non-trivial branches.'
+  license: GPL-3.0-only
+  license_family: GPL
+  license_file: LICENSE
+  doc_url: https://github.com/wiegertj/BAD/wiki
+  dev_url: https://github.com/wiegertj/BAD
+
+extra:
+  recipe-maintainers:
+    - wiegertj
